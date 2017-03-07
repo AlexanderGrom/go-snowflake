@@ -76,6 +76,15 @@ func (self *SnowFlake) Generate() (uint64, error) {
 	return uint64((timestamp << (MachineBits + SequenceBits)) | uint64(self.machine<<MachineBits) | uint64(self.sequence)), nil
 }
 
+// Date format YYYY-MM-DD
+func EpochTimestamp(date string) error {
+	t, err := time.Parse("2006-01-02", date)
+	if err != nil {
+		epochTimestamp = t.Unix() * 1e3
+	}
+	return err
+}
+
 func timestamp() uint64 {
 	return uint64((time.Now().UnixNano() / 1e6) - epochTimestamp)
 }
