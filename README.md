@@ -1,37 +1,34 @@
 
-## Go-Snowflake - Генератор идентификаторов по мотивам Twitter Snowflake на языке Go
+## Go-Snowflake - The ID generator is based on the ideas of Twitter Snowflake.
 
-Генерирует уникальные числовые 64-битный идентификаторы. Генератор основывается на идеях [Twitter Snowflake](https://github.com/twitter/snowflake/).
+Generates unique numeric 64-bit identifiers. The generator is based on ideas [Twitter Snowflake](https://github.com/twitter/snowflake/).
 
-### Предназначение
+### Destination
 
-Snowflake требуется для генерации уникальных упорядоченных идентификаторов на разных машинах. Поддерживает 1024 машины (0-1023).
+Snowflake is designed to generate unique ordered identifiers on different machines. Supports 1024 machines (0-1023).
 
-### Детали
+### Details
 
-64-битный идентификатор состоит из:
+The 64-bit identifier consists of:
 
-* 42bit под отметку времени в микросекундах
-* 10bit под номер машины, на котором идет генерация
-* 12bit под случайный номер выполнения в одну микросекунду
+* 41bit contains a timestamp in milliseconds
+* 10bit contains the number of the machine to generate
+* 12bit contains the execution number in one millisecond
 
-Обязательно установите `epochTimestamp` настройкой `EpochTimestamp()`. В ней содержится время в микросекундах начала эпохи генерации идентификаторов. Например, если задать отметку времени от 01.01.2017 00:00:00, то генератор сможет работать ещё почти 140 лет пока не будет переполнен. Чем отметка меньше, тем меньше времени осталось генератору. Рекомендуется установить её в отметку времени начала разработки проекта.
-
-### Пример
+### Example
 
 ```go
 package main
 
 import (
 	"fmt"
-    "github.com/AlexanderGrom/go-snowflake"
+    "github.com/alexandergrom/go-snowflake"
 )
 
 func main() {
-	snowflake.EpochTimestamp("2017-01-01")
-	sf, _ := snowflake.New(1)
-	fmt.Printf("%s\n", sf.Generate())
+	// epoch is the starting point for all identifiers
+	var epoch = time.Date(2016, 1, 1, 0, 0, 0, 0, time.UTC)
+	var gen, _ = snowflake.New(1, epoch)
+	fmt.Printf("%d\n", gen.Generate()) // 1058897343283204096
 }
 ```
-
-## -~- THE END -~-
